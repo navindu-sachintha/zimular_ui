@@ -1,65 +1,101 @@
 "use client"
 
-import * as React from "react"
+import React, {useEffect, useState} from "react"
+import * as z from 'zod';
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { signIn,useSession } from "next-auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { cn } from "@/lib/utils"
 import { TokensIcon, GitHubLogoIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { error } from "console";
+
+const formSchema = z.object(
+  {
+    email: z.string().email(),
+    password: z.string().min(6),
+  }
+)
+
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const router = useRouter();
+  const session = useSession();
+  const [error, setError] = useState("");
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
+  useEffect(()=>{
+    if(session?.status == "authenticated"){
+      router.replace("/dashboard");
+    }
+  },[session, router])
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+  const form = useForm<z.infer<typeof formSchema>>(
+    {
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        email:""
+      }
+    }
+  )
+
+  const handleSubmit = async (values: z.infer<typeof formSchema>)=>{
+    console.log({values});
+    const res = await signIn("credentials",{
+      redirect:false,
+      email: values.email,
+      password: values.password,
+    })
+
+    if (res?.error){
+      setError("Invalid Email or Password");
+      if(res?.url) router.replace("/dashboard");
+    }else{
+      setError("");
+    }
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="Email Address"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-            <Label className="sr-only" htmlFor="email">
-              Password
-            </Label>
-            <Input
-              id="pass"
-              placeholder="Password"
-              type="password"
-              autoCapitalize="none"
-              autoComplete="password"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <TokensIcon className="mr-2 h-4 w-4 animate-spin" />
-            )}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <FormField control={form.control} name="email" render={({field})=>{
+            return <FormItem>
+              <FormLabel className="sr-only">Email</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="Email"
+                  type="email"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          }}/>
+          <FormField control={form.control} name="password" render={({field})=>{
+            return <FormItem>
+              <FormLabel className="sr-only">Password</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="Password"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          }}/>
+          <Button className="mt-4 w-full">
             Sign In
           </Button>
-        </div>
-      </form>
+          <p>{error && error}</p>
+        </form>
+      </Form>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />

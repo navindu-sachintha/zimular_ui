@@ -24,9 +24,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { signOut, useSession } from "next-auth/react";
 
 const Navigation = () => {
-  const { setTheme } = useTheme()
+  const { setTheme } = useTheme();
+  
+  const {data: session}:any = useSession();
   return (
     <>
       <div className="flex justify-between p-5">
@@ -44,20 +47,31 @@ const Navigation = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/login" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Login</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/signup" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Sign Up</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
                 <Link href="/doc" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>Docs</NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
+              {!session ? (
+                <>
+                  <NavigationMenuItem>
+                    <Link href="/login" legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>Login</NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link href="/signup" legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>Sign Up</NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                </>
+              ):(
+                <>
+                  <p className={navigationMenuTriggerStyle()}>{session.user?.email}</p>
+                  <Button variant="outline" onClick={()=>{
+                    signOut();
+                  }}>Sign out</Button>
+                </>
+              )}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon">

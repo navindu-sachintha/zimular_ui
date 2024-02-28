@@ -1,6 +1,5 @@
 "use client"
 
-
 import React, { useEffect, useState } from "react";
 import * as z from 'zod';
 import { useForm } from "react-hook-form";
@@ -17,7 +16,7 @@ const formSchema = z.object(
   {
     email: z.string().email(),
     username: z.string(),
-    password: z.string().min(3),
+    password: z.string().min(6),
     passwordConfirm: z.string(),
   }
 ).refine((data)=> {
