@@ -27,6 +27,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter();
   const session = useSession();
+  //const { data: session, status: sessionStatus } = useSession();
   const [error, setError] = useState("");
 
   useEffect(()=>{
@@ -45,9 +46,8 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   )
 
   const handleSubmit = async (values: z.infer<typeof formSchema>)=>{
-    console.log({values});
     const res = await signIn("credentials",{
-      redirect:false,
+      redirect: false,
       email: values.email,
       password: values.password,
     })
@@ -55,9 +55,12 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
     if (res?.error){
       setError("Invalid Email or Password");
       if(res?.url) router.replace("/dashboard");
+      
+      console.log(error)
     }else{
       setError("");
     }
+    console.log({values})
   }
 
   return (
@@ -90,7 +93,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
               <FormMessage />
             </FormItem>
           }}/>
-          <Button className="mt-4 w-full">
+          <Button className="mt-4 w-full" type="submit">
             Sign In
           </Button>
           <p>{error && error}</p>
