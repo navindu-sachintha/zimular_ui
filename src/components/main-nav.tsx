@@ -66,6 +66,11 @@ const Navigation = () => {
                 </>
               ):(
                 <>
+                  <NavigationMenuItem>
+                    <Link href="/dashboard" legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>Dashboard</NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
                   <p className={navigationMenuTriggerStyle()}>{session.user?.email}</p>
                   <Button variant="outline" onClick={()=>{
                     signOut();
