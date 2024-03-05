@@ -1,4 +1,5 @@
 import Navigation from '@/components/main-nav';
+import DashLayout from './Dashlayout';
 import React from 'react'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -11,6 +12,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import Dashform from '@/components/dashform';
 
 const Dashboard =  async () => {
   const session = await getServerSession();
@@ -21,6 +23,9 @@ const Dashboard =  async () => {
     
     <>
       <Navigation />
+      <DashLayout>
+        <Dashform />
+      </DashLayout>
     </>
   )
 }
