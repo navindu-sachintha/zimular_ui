@@ -1,21 +1,24 @@
-import { inputs } from '@/app/dashboard/data/playlists'
+"use client"
+
 import React from 'react'
 import { Button } from '@/components/ui/button'
+import { Separator } from './ui/separator'
+import { useIndex } from '@/utils/IndexProvider'
 
 
-export default function Sidenav() {
+const Sidenav = ({ toggleOutput }) => {
     return (
         <>
             <p className='p-2 text-lg font-medium'>Simulation Input</p>
-            {inputs.group.map(group => {
-                return (
-                    <div key={group.group_id} className='p-2'>
-                        <Button variant="outline" className='w-full'>{group.name}</Button>
-                    </div>
-                )
-            })}
+            <Separator className='m-2'/>
+            <Button onClick={toggleOutput} variant="default" className='w-full' >Input</Button>
             <p className='p-2 text-lg font-medium'>Simulation Output</p>
+            <Separator className='m-2'/>
+            <div className="p-2">
+                <Button variant="default" className='w-full' >Output</Button>
+            </div>   
             <p className='p-2 text-lg font-medium'>ML Beta</p>
         </>
     )
 }
+export default Sidenav

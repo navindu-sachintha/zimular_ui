@@ -1,19 +1,30 @@
 // components/Layout.tsx
-import Sidenav from '@/components/side-nav';
-import React from 'react';
+"use client"
 
-const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+import Sidenav from '@/components/side-nav';
+import { IndexProvider } from '@/utils/IndexProvider';
+import React from 'react';
+import { inputs } from './data/playlists';
+
+const DashLayout: React.FC<{ children: React.ReactNode }> = (attr) => {
+
+  const [showOutput, setShowOutput] = React.useState(false);
+
+  const toggleOutput = () => {
+    setShowOutput(!showOutput);
+  };
+
   return (
     <div className='flex '>
       {/* Sidebar */}
       <div className='basis-1/5 grow-0 shrink-0'>
         {/* Sidebar content */}
-        <Sidenav />
+        <Sidenav toggleOutput={attr.toggleOutput}/>
       </div>
       {/* Main content */}
       <div className='flex-1'>
         {/* Main content */}
-        {children}
+        {attr.children}
       </div>
     </div>
   );
