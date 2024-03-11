@@ -11,7 +11,9 @@ const Sidenav = ({ toggleOutput }) => {
         <>
             <p className='p-2 text-lg font-medium'>Simulation Input</p>
             <Separator className='m-2'/>
-            <Button onClick={toggleOutput} variant="default" className='w-full' >Input</Button>
+            <div className="p-2">
+                <Button onClick={toggleOutput} variant="default" className='w-full' >Input</Button>
+            </div>
             <p className='p-2 text-lg font-medium'>Simulation Output</p>
             <Separator className='m-2'/>
             <div className="p-2">
