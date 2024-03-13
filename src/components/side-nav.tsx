@@ -6,7 +6,7 @@ import { Separator } from './ui/separator'
 import { useIndex } from '@/utils/IndexProvider'
 
 
-const Sidenav = ({ toggleOutput }) => {
+const Sidenav = ({ toggleOutput }:any) => {
     return (
         <>
             <p className='p-2 text-lg font-medium'>Simulation Input</p>

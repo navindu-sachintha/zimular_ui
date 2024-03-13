@@ -16,10 +16,6 @@ const Dashform = (attr:any) => {
 
     const [formData, setFormData] = React.useState({});
 
-    
-
-
-
     const handleSubmit = (e:any) => {
         e.preventDefault();
 
@@ -31,7 +27,7 @@ const Dashform = (attr:any) => {
                         const value = e.target.elements[field.id].value;
                         updatedFormData[input.user_id] = updatedFormData[input.user_id] || {};
                         updatedFormData[input.user_id][group.group_id] = updatedFormData[input.user_id][group.group_id] || {};
-                        updatedFormData[input.user_id][group.group_id][field.id] = field.type === "checkbox" ? e.target.elements[field.id].checked : value;
+                        updatedFormData[input.user_id][group.group_id][field.name] = field.type === "checkbox" ? e.target.elements[field.id].checked : value;
                     });
                 });
             });
@@ -46,7 +42,7 @@ const Dashform = (attr:any) => {
         <div className={test}>
                 <form onSubmit={handleSubmit}>
                     <div className="flex justify-between mt-3">
-                        <p className="text-5xl font-bold">Input <span className="text-lg">[Pakaya123#hutta]</span></p>
+                        <p className="text-5xl font-bold">Input <span className="text-lg">[ {inputs[0].input} ]</span></p>
                         <Button variant="default" type="submit">
                             <TriangleRightIcon/>Run
                         </Button>
@@ -70,13 +66,13 @@ const Dashform = (attr:any) => {
                                                                 <input 
                                                                     type="text"
                                                                     id={field.id}
-                                                                    defaultValue={field.default_value}     
+                                                                    defaultValue={field.defult_value}     
                                                                 />
                                                             ):(
                                                                 <input 
                                                                     type="checkbox"
                                                                     id={field.id}
-                                                                    defaultChecked={field.default_value === "true"}
+                                                                    defaultChecked={field.defult_value === "true"}
                                                                 />
                                                             )}
                                                         </div>
