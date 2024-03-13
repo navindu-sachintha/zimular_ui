@@ -17,7 +17,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = (attr) => {
   return (
     <div className='flex '>
       {/* Sidebar */}
-      <div className='basis-1/5 grow-0 shrink-0'>
+      <div className='basis-1/6 grow-0 shrink-0'>
         {/* Sidebar content */}
         <Sidenav toggleOutput={attr.toggleOutput}/>
       </div>
