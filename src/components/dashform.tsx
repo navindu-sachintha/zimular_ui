@@ -12,7 +12,7 @@ import { Label } from './ui/label';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator'
 
-const Dashform = (attr) => {
+const Dashform = (attr:any) => {
 
     const [formData, setFormData] = React.useState({});
 
@@ -20,21 +20,21 @@ const Dashform = (attr) => {
 
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:any) => {
         e.preventDefault();
 
-        const updatedFormData = { ...formData }
+        const updatedFormData: { [key: string]: any } = { ...formData }
 
         inputs.forEach((input) => {
-            input.group.forEach((group) => {
-              group.fields.forEach((field) => {
-                const value = event.target.elements[field.id].value;
-                updatedFormData[input.user_id] = updatedFormData[input.user_id] || {};
-                updatedFormData[input.user_id][group.group_id] = updatedFormData[input.user_id][group.group_id] || {};
-                updatedFormData[input.user_id][group.group_id][field.id] = field.type === "checkbox" ? event.target.elements[field.id].checked : value;
-              });
+                input.group.forEach((group) => {
+                    group.fields.forEach((field) => {
+                        const value = e.target.elements[field.id].value;
+                        updatedFormData[input.user_id] = updatedFormData[input.user_id] || {};
+                        updatedFormData[input.user_id][group.group_id] = updatedFormData[input.user_id][group.group_id] || {};
+                        updatedFormData[input.user_id][group.group_id][field.id] = field.type === "checkbox" ? e.target.elements[field.id].checked : value;
+                    });
+                });
             });
-          });
 
         setFormData(updatedFormData)
     }
@@ -47,7 +47,7 @@ const Dashform = (attr) => {
                 <form onSubmit={handleSubmit}>
                     <div className="flex justify-between mt-3">
                         <p className="text-5xl font-bold">Input <span className="text-lg">[Pakaya123#hutta]</span></p>
-                        <Button varient="default" type="submit">
+                        <Button variant="default" type="submit">
                             <TriangleRightIcon/>Run
                         </Button>
                     </div>
