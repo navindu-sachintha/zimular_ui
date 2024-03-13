@@ -59,7 +59,7 @@ const Dashform = (attr:any) => {
         <div className={test}>
                 <form onSubmit={handleSubmit}>
                     <div className="flex justify-between mt-3">
-                        <p className="text-5xl font-bold">Input <span className="text-lg">[Pakaya123#hutta]</span></p>
+                        <p className="text-5xl font-bold">Input <span className="text-lg">[ {inputs[0].input} ]</span></p>
                         <Dialog>
                             <DialogTrigger asChild>
                                 <Button variant="default" type="submit">
